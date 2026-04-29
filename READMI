@@ -1,0 +1,31 @@
+# URL Shortener Service
+
+Сервис для управления короткими ссылками с кешированием статистики и поддержкой конфигурации через переменные окружения.
+
+## Функциональность
+
+- Создание коротких ссылок (POST /links)
+- Получение списка всех ссылок с пагинацией (GET /links)
+- Переход по короткой ссылке с автоматическим увеличением счетчика (GET /links/{short_code})
+- Просмотр статистики по ссылке с кешированием (GET /links/{short_code}/stats)
+- Удаление короткой ссылки (DELETE /links/{short_code})
+
+## Требования
+
+- Go 1.22 или выше
+- PostgreSQL 12 или выше
+
+## Настройка базы данных
+
+Создайте базу данных и таблицу `links`:
+
+```sql
+CREATE DATABASE golang_db;
+
+CREATE TABLE links (
+    id SERIAL PRIMARY KEY,
+    short_code VARCHAR(10) NOT NULL UNIQUE,
+    original_url TEXT NOT NULL,
+    visits INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
